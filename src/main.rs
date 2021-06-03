@@ -10,10 +10,11 @@ use rand::{Rng, SeedableRng};
 use time::Instant;
 use crate::sortstat::bubble_sorter::BubbleSorter;
 use crate::sortstat::merge_sorter::MergeSorter;
+use crate::sortstat::select_sorter::SelectSorter;
 
 const EST_START: usize = usize::pow(2, 14);
 const EST_MIN_START_DURATION_MS: i128 = 1000;
-const EST_MULTIPLIER: f32 = 1.1;
+const EST_MULTIPLIER: f32 = 1.2;
 const EST_ITERATIONS: u32 = 5;
 
 fn get_random_vec(length: usize) -> Vec<u64> {
@@ -60,7 +61,7 @@ fn estimate(sorter: &mut dyn Sorter) -> Complexity {
     let mut stage_time_ms = bench(sorter, EST_START);
     let mut vec_size: usize = EST_START;
     while stage_time_ms < EST_MIN_START_DURATION_MS {
-        vec_size = ((vec_size as f32) * EST_MULTIPLIER) as usize;
+        vec_size = vec_size * 2;
         stage_time_ms = bench(sorter, vec_size);
     }
 
@@ -87,6 +88,11 @@ fn main() {
     let mut sorter = Box::new(StdSorterUnstable {});
     let estimation = estimate(sorter.as_mut());
     println!("StdSorterUnstable close to {}", estimation);
+
+    println!("Testing SelectSorter...");
+    let mut sorter = Box::new(SelectSorter {});
+    let estimation = estimate(sorter.as_mut());
+    println!("SelectSorter close to {}", estimation);
 
     println!("Testing BubbleSorter...");
     let mut sorter = Box::new(BubbleSorter {});
