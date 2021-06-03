@@ -8,10 +8,11 @@ use rand::rngs::SmallRng;
 use rand::{Rng, SeedableRng};
 
 use time::Instant;
+use crate::sortstat::bubble_sorter::BubbleSorter;
 
-const EST_START: usize = usize::pow(2, 16);
+const EST_START: usize = usize::pow(2, 12);
 const EST_MULTIPLIER: f32 = 1.5;
-const EST_MAX_TIME_MS: i128 = 4000;
+const EST_MAX_TIME_MS: i128 = 16000;
 
 fn get_random_vec(length: usize) -> Vec<u64> {
     let mut small_rng = SmallRng::from_entropy();
@@ -23,17 +24,6 @@ fn get_random_vec(length: usize) -> Vec<u64> {
         i = i + 1;
     }
     return result;
-}
-
-fn is_sorted(vec: Vec<u64>) -> bool {
-    let mut prev_element = 0;
-    for element in vec {
-        if element < prev_element {
-            return false;
-        }
-        prev_element = element;
-    }
-    return true;
 }
 
 fn bench(sorter: &mut dyn Sorter, vec_size: usize) -> i128 {
@@ -56,7 +46,7 @@ fn estimate(sorter: &mut dyn Sorter) -> Complexity {
 
         vec_size = ((vec_size as f32) * EST_MULTIPLIER) as usize;
 
-        //println!("{}: {} ms", vec_size, stage_time_ms);
+        println!("{}: {} ms", vec_size, stage_time_ms);
     }
 
     estimator.get_closest_complexity()
@@ -70,4 +60,8 @@ fn main() {
     let mut sorter = Box::new(StdSorterUnstable {});
     let estimation = estimate(sorter.as_mut());
     println!("StdSorterUnstable close to {}", estimation);
+
+    let mut sorter = Box::new(BubbleSorter {});
+    let estimation = estimate(sorter.as_mut());
+    println!("BubbleSorter close to {}", estimation);
 }
