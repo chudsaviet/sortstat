@@ -1,8 +1,9 @@
 mod sortstat;
 
-use crate::sortstat::estimator::{Estimator, Complexity};
+use crate::sortstat::estimator::{Complexity, Estimator};
 use crate::sortstat::sorter_trait::Sorter;
 use crate::sortstat::std_sorter::StdSorter;
+use crate::sortstat::std_sorter_unstable::StdSorterUnstable;
 use rand::rngs::SmallRng;
 use rand::{Rng, SeedableRng};
 
@@ -55,7 +56,7 @@ fn estimate(sorter: &mut dyn Sorter) -> Complexity {
 
         vec_size = ((vec_size as f32) * EST_MULTIPLIER) as usize;
 
-        println!("{}: {} ms", vec_size, stage_time_ms);
+        //println!("{}: {} ms", vec_size, stage_time_ms);
     }
 
     estimator.get_closest_complexity()
@@ -64,6 +65,9 @@ fn estimate(sorter: &mut dyn Sorter) -> Complexity {
 fn main() {
     let mut sorter = Box::new(StdSorter {});
     let estimation = estimate(sorter.as_mut());
+    println!("StdSorter is close to {}", estimation);
 
-    println!("Most likely {}", estimation);
+    let mut sorter = Box::new(StdSorterUnstable {});
+    let estimation = estimate(sorter.as_mut());
+    println!("StdSorterUnstable close to {}", estimation);
 }
