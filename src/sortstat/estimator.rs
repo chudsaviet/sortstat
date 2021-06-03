@@ -102,7 +102,7 @@ impl Estimator {
         let mut closest_complexity: Complexity = Complexity::Undefined;
         let mut minimal_weight: f64 = f64::MAX;
         for (complexity, weight) in self.weights.clone() {
-            println!("{} {}", complexity, weight);
+            // println!("{} {}", complexity, weight);
             if weight < minimal_weight {
                 minimal_weight = weight;
                 closest_complexity = complexity;
