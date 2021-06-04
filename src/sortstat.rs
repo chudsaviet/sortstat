@@ -5,3 +5,4 @@ pub mod std_sorter_unstable;
 pub mod bubble_sorter;
 pub mod merge_sorter;
 pub mod select_sorter;
+pub mod quick_sorter;

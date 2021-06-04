@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use std::f64::consts;
 use std::fmt;
 
 #[derive(Copy, Clone, Eq, PartialEq, Hash)]

@@ -11,6 +11,7 @@ use time::Instant;
 use crate::sortstat::bubble_sorter::BubbleSorter;
 use crate::sortstat::merge_sorter::MergeSorter;
 use crate::sortstat::select_sorter::SelectSorter;
+use crate::sortstat::quick_sorter::QuickSorter;
 
 const EST_START: usize = usize::pow(2, 14);
 const EST_MIN_START_DURATION_MS: i128 = 1000;
@@ -103,4 +104,10 @@ fn main() {
     let mut sorter = Box::new(MergeSorter {});
     let estimation = estimate(sorter.as_mut());
     println!("MergeSorter close to {}", estimation);
+
+    println!("Testing QuickSorter...");
+    let mut sorter = Box::new(QuickSorter {});
+    let estimation = estimate(sorter.as_mut());
+    println!("QuickSorter close to {}", estimation);
+
 }
