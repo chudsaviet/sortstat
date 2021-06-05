@@ -6,6 +6,7 @@ pub enum Complexity {
     Undefined,
     LogN,
     N,
+    KN,
     NLogN,
     NSquared,
     Exp,
@@ -17,6 +18,7 @@ impl fmt::Display for Complexity {
             Complexity::Undefined => write!(f, "Undefined"),
             Complexity::LogN => write!(f, "O(log n)"),
             Complexity::N => write!(f, "O(n)"),
+            Complexity::KN => write!(f, "O(kn) where k=20"),
             Complexity::NLogN => write!(f, "O(n*log n)"),
             Complexity::NSquared => write!(f, "O(n^2)"),
             Complexity::Exp => write!(f, "O(e^n)"),
@@ -35,6 +37,7 @@ impl Estimator {
         let mut weights: HashMap<Complexity, f64> = HashMap::with_capacity(5);
         weights.insert(Complexity::LogN, 0f64);
         weights.insert(Complexity::N, 0f64);
+        weights.insert(Complexity::KN, 0f64);
         weights.insert(Complexity::NLogN, 0f64);
         weights.insert(Complexity::NSquared, 0f64);
         weights.insert(Complexity::Exp, 0f64);
@@ -65,7 +68,16 @@ impl Estimator {
         let predicted_duration = k * (size as f64);
         self.weights.insert(
             Complexity::N,
-            *self.weights.get(&Complexity::LogN).unwrap()
+            *self.weights.get(&Complexity::N).unwrap()
+                + (predicted_duration - duration as f64).powf(2f64),
+        );
+
+        /* kn, k=20 */
+        let k = (self.initial_duration as f64) / (20.0*self.initial_size as f64);
+        let predicted_duration = k * 20.0 * (size as f64) ;
+        self.weights.insert(
+            Complexity::KN,
+            *self.weights.get(&Complexity::KN).unwrap()
                 + (predicted_duration - duration as f64).powf(2f64),
         );
 
@@ -101,7 +113,7 @@ impl Estimator {
         let mut closest_complexity: Complexity = Complexity::Undefined;
         let mut minimal_weight: f64 = f64::MAX;
         for (complexity, weight) in self.weights.clone() {
-            // println!("{} {}", complexity, weight);
+            //println!("{} {}", complexity, weight);
             if weight < minimal_weight {
                 minimal_weight = weight;
                 closest_complexity = complexity;

@@ -12,6 +12,7 @@ use crate::sortstat::bubble_sorter::BubbleSorter;
 use crate::sortstat::merge_sorter::MergeSorter;
 use crate::sortstat::select_sorter::SelectSorter;
 use crate::sortstat::quick_sorter::QuickSorter;
+use crate::sortstat::radix_sorter::RadixSorter;
 
 const EST_START: usize = usize::pow(2, 14);
 const EST_MIN_START_DURATION_MS: i128 = 1000;
@@ -110,4 +111,8 @@ fn main() {
     let estimation = estimate(sorter.as_mut());
     println!("QuickSorter close to {}", estimation);
 
+    println!("Testing RadixSorter...");
+    let mut sorter = Box::new(RadixSorter {});
+    let estimation = estimate(sorter.as_mut());
+    println!("RadixSorter close to {}", estimation);
 }

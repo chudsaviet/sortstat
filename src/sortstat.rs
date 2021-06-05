@@ -6,3 +6,4 @@ pub mod bubble_sorter;
 pub mod merge_sorter;
 pub mod select_sorter;
 pub mod quick_sorter;
+pub mod radix_sorter;
