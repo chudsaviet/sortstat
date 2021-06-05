@@ -13,29 +13,30 @@ impl RadixSorter {
 
     fn radix_sort(slice: &mut [u64]) {
         let len = slice.len();
-        // Best guess is 2/10 of the overall size.
+        // Best guess is 2/20 of the overall size.
+        let bucket_capacity = len/10;
         // Yes, its the best way to initialize an array of vectors.
         let mut buckets: [&mut Vec<u64>; 20] = [
-            &mut Vec::with_capacity(len/5),
-            &mut Vec::with_capacity(len/5),
-            &mut Vec::with_capacity(len/5),
-            &mut Vec::with_capacity(len/5),
-            &mut Vec::with_capacity(len/5),
-            &mut Vec::with_capacity(len/5),
-            &mut Vec::with_capacity(len/5),
-            &mut Vec::with_capacity(len/5),
-            &mut Vec::with_capacity(len/5),
-            &mut Vec::with_capacity(len/5),
-            &mut Vec::with_capacity(len/5),
-            &mut Vec::with_capacity(len/5),
-            &mut Vec::with_capacity(len/5),
-            &mut Vec::with_capacity(len/5),
-            &mut Vec::with_capacity(len/5),
-            &mut Vec::with_capacity(len/5),
-            &mut Vec::with_capacity(len/5),
-            &mut Vec::with_capacity(len/5),
-            &mut Vec::with_capacity(len/5),
-            &mut Vec::with_capacity(len/5)
+            &mut Vec::with_capacity(bucket_capacity),
+            &mut Vec::with_capacity(bucket_capacity),
+            &mut Vec::with_capacity(bucket_capacity),
+            &mut Vec::with_capacity(bucket_capacity),
+            &mut Vec::with_capacity(bucket_capacity),
+            &mut Vec::with_capacity(bucket_capacity),
+            &mut Vec::with_capacity(bucket_capacity),
+            &mut Vec::with_capacity(bucket_capacity),
+            &mut Vec::with_capacity(bucket_capacity),
+            &mut Vec::with_capacity(bucket_capacity),
+            &mut Vec::with_capacity(bucket_capacity),
+            &mut Vec::with_capacity(bucket_capacity),
+            &mut Vec::with_capacity(bucket_capacity),
+            &mut Vec::with_capacity(bucket_capacity),
+            &mut Vec::with_capacity(bucket_capacity),
+            &mut Vec::with_capacity(bucket_capacity),
+            &mut Vec::with_capacity(bucket_capacity),
+            &mut Vec::with_capacity(bucket_capacity),
+            &mut Vec::with_capacity(bucket_capacity),
+            &mut Vec::with_capacity(bucket_capacity)
         ];
 
         for digit in 0..20u8 {

@@ -17,7 +17,7 @@ use crate::sortstat::radix_sorter::RadixSorter;
 const EST_START: usize = usize::pow(2, 14);
 const EST_MIN_START_DURATION_MS: i128 = 1000;
 const EST_MULTIPLIER: f32 = 1.2;
-const EST_ITERATIONS: u32 = 5;
+const EST_ITERATIONS: u8 = 7;
 
 fn get_random_vec(length: usize) -> Vec<u64> {
     let mut small_rng = SmallRng::from_entropy();
